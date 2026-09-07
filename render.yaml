@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: anistream-backend
+    runtime: node
+    plan: free
+    region: oregon # pick the region closest to your users
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # PORT is injected automatically by Render — server.js reads process.env.PORT
+      - key: CORS_ORIGINS
+        value: "*" # tighten this to your Expo/EAS domains once you have them, comma-separated
+      - key: JIKAN_BASE_URL
+        value: https://api.jikan.moe/v4
+      - key: CACHE_TTL_SECONDS
+        value: "600"
+      - key: RATE_LIMIT_WINDOW_MS
+        value: "60000"
+      - key: RATE_LIMIT_MAX
+        value: "60"
+      # Add these manually in the Render dashboard (Secret Files or Env Vars) — never commit them:
+      # - FIREBASE_PROJECT_ID
+      # - FIREBASE_CLIENT_EMAIL
+      # - FIREBASE_PRIVATE_KEY   (paste with \n escaped, or use a Secret File)
